@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Irish Rail</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<script>
+			$(document).ready(function () {
+				$.ajax({
+					type: "GET",
+					url: "http://api.irishrail.ie/realtime/realtime.asmx/getAllStationsXML_WithStationType?StationType=D",
+					dataType: "xml",
+					success: xmlParser
+				});
+			});
+			
+			function xmlParser(xml)	{
+				console.log(xml);
+				$(xml).find("objStation").each(function () {
+					var out = "<br/><em>" + 
+					($(this).find('StationDesc').text()) + "<em><br/>" +
+					($(this).find('StationLatitude').text()) + "<br/>" + ($(this).find('StationLongitude').text()) + "<br/>";
+					$("#result").append(out);
+				});
+			}
+		</script>
+	</head>
+	<body>
+		<div id="result"></div>
+	</body>
+</html>
